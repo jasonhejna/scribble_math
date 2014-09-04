@@ -55,6 +55,7 @@ ScribbleArea::ScribbleArea(QWidget *parent)
     scribbling = false;
     myPenWidth = 3;
     myPenColor = Qt::green;
+    //xyarray;
 }
 //! [0]
 
@@ -131,12 +132,16 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling)
         //qDebug() << "mypoint: " << event->pos();
+        qDebug() << event->pos().x() << ",";
+        qDebug() << event->pos().y() << ",";
+        xyarray.append(QString("%1,").arg(event->pos().x()));
         drawLineTo(event->pos());
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling) {
+        qDebug() << "my concatened data" << xyarray;
         drawLineTo(event->pos());
         scribbling = false;
     }
