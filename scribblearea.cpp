@@ -130,6 +130,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling)
+        //qDebug() << "mypoint: " << event->pos();
         drawLineTo(event->pos());
 }
 

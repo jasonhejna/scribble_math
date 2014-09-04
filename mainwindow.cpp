@@ -71,6 +71,8 @@ void MainWindow::submitBtn() {
     //if answer was a match, then show a success screen, and start a 60 seconds timeout
 
     //ui->label->setText("eh");
+
+    //saveFile(fileFormat);
 }
 
 
@@ -103,8 +105,10 @@ void MainWindow::open()
 void MainWindow::save()
 //! [5] //! [6]
 {
+
     QAction *action = qobject_cast<QAction *>(sender());
     QByteArray fileFormat = action->data().toByteArray();
+    //printf(fileFormat);
     saveFile(fileFormat);
 }
 //! [6]

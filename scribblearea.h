@@ -77,6 +77,8 @@ protected:
 
 private:
     void drawLineTo(const QPoint &endPoint);
+    int qpointIterator();
+    void qpointObject();
     void resizeImage(QImage *image, const QSize &newSize);
 
     bool modified;
