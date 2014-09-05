@@ -42,6 +42,7 @@
 #ifndef QT_NO_PRINTER
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QFile>
 #endif
 
 #include "scribblearea.h"
@@ -55,7 +56,7 @@ ScribbleArea::ScribbleArea(QWidget *parent)
     scribbling = false;
     myPenWidth = 3;
     myPenColor = Qt::green;
-    //xyarray;
+    //xcsv;
 }
 //! [0]
 
@@ -124,6 +125,8 @@ void ScribbleArea::mousePressEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton) {
         lastPoint = event->pos();
+        xcsv.append(QString("\"x\" : [%1,").arg(event->pos().x()));
+        ycsv.append(QString("\"y\" : [%1,").arg(event->pos().y()));
         scribbling = true;
     }
 }
@@ -132,18 +135,36 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent *event)
 {
     if ((event->buttons() & Qt::LeftButton) && scribbling)
         //qDebug() << "mypoint: " << event->pos();
-        qDebug() << event->pos().x() << ",";
-        qDebug() << event->pos().y() << ",";
-        xyarray.append(QString("%1,").arg(event->pos().x()));
+        //qDebug() << event->pos().x() << ",";
+        //qDebug() << event->pos().y() << ",";
+        xcsv.append(QString("%1,").arg(event->pos().x()));
+        ycsv.append(QString("%1,").arg(event->pos().y()));
         drawLineTo(event->pos());
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton && scribbling) {
-        qDebug() << "my concatened data" << xyarray;
         drawLineTo(event->pos());
         scribbling = false;
+
+        xcsv.append(QString("%1],").arg(event->pos().x()));
+        ycsv.append(QString("%1]").arg(event->pos().y()));
+        qDebug() << "my x concatened data" << xcsv;
+        qDebug() << "my y concatened data" << ycsv;
+
+        //write output to a file
+        // Create a new file
+        QFile file("/var/data/xydata.txt");
+        file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QTextStream out(&file);
+        out << xcsv << "\n";
+        out << ycsv << "\n";
+
+        // optional, as QFile destructor will already do it:
+        file.close();
+        xcsv = "";
+        ycsv = "";
     }
 }
 

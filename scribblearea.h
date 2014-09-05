@@ -82,7 +82,8 @@ private:
     bool modified;
     bool scribbling;
     int myPenWidth;
-    QString xyarray;
+    QString xcsv;
+    QString ycsv;
     QColor myPenColor;
     QImage image;
     QPoint lastPoint;
