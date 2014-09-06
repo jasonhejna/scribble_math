@@ -48,4 +48,5 @@ int main(int argc, char *argv[])
     MainWindow window;
     window.show();
     return app.exec();
+    // test comment
 }
